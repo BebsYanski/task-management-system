@@ -14,3 +14,16 @@ body {
 .page-link {
   cursor: pointer;
 }
+
+.containers {
+  max-width: 960px; /* Adjust as needed */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.mt-4 {
+  margin-top: 1.5rem; /* Equivalent to Bootstrap's mt-4 */
+}
+/* ... other styles */

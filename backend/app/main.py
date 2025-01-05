@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from routers import tasks
-from database import Base, engine
+from app.routers import tasks
+from app.db.database import Base, engine
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()

@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from models.sql_model import Task
-from schemas import TaskCreate, TaskUpdate
+from app.models.task import Task
+from app.schemas import TaskCreate, TaskUpdate
 
 def get_tasks(db: Session, skip: int = 0, limit: int = 10):
     """Retrieves a list of tasks."""

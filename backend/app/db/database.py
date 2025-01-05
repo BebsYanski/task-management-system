@@ -1,10 +1,10 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models.sql_model import Base
+from app.models.task import Base
 
 db_user: str = 'postgres'
 db_port: int = 5432
-db_host: str = 'localhost'
+db_host: str = 'db'
 db_password: str = '21000'
 
 uri: str = F'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/task_db'

@@ -16,12 +16,13 @@ class Priority(str,Enum):
     
 class TaskStatus(str,Enum):
     complete = "complete"
+    inProgress = "inProgress"
     incomplete = "incomplete"
-
+ 
 # Creating a new model or table
 
 class Task(Base):
-    __tablename__ = "tasks"
+    __tablename__ = "tasks" 
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
@@ -29,6 +30,6 @@ class Task(Base):
     due_date = Column(DateTime)
     priority = Column(SQLAlchemyEnum(Priority))
     status = Column(SQLAlchemyEnum(TaskStatus), default="incomplete")
-    creation_date = Column(DateTime, default=datetime.datetime.now()) 
+    creation_date = Column(DateTime, default=datetime.datetime.now())  
      
     
