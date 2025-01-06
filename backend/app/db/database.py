@@ -2,15 +2,22 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from app.models.task import Base
 
-db_user: str = 'postgres'
-db_port: int = 5432
-db_host: str = 'db'
-db_password: str = '21000'
+db_user: str = 'avnadmin'
+db_port: int = 18629
+db_host: str = 'postgrestaskdb-task-management-systemv1.b.aivencloud.com'
+db_password: str = 'AVNS_Ho7YPyhliX3KancEu9t'
+# db_user: str = 'postgres'
+# db_port: int = 5432
+# db_host: str = 'db'
+# db_password: str = '21000'
 
 # URI format: postgres://username:password@hostname:port/database_name?sslmode=require
 
 
-uri: str = F'postgres://avnadmin:AVNS_Ho7YPyhliX3KancEu9t@postgrestaskdb-task-management-systemv1.b.aivencloud.com:18629/defaultdb?sslmode=require'
+# uri: str = F'postgres://avnadmin:AVNS_Ho7YPyhliX3KancEu9t@postgrestaskdb-task-management-systemv1.b.aivencloud.com:18629/defaultdb?sslmode=require'
+
+uri: str = F'postgres://{db_user}:{db_password}@{db_host}:{db_port}/defaultdb?sslmode=require'
+
 
 # uri: str = F'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/task_db'
 
