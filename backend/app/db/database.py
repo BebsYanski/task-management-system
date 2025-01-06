@@ -9,11 +9,10 @@ load_dotenv()
 
 
 db_user = os.environ.get("DB_USER")
-db_port = int(os.environ.get("DB_PORT", default=5432))  # Use default 5432 if DB_PORT is not set
+db_port = int(os.environ.get("DB_PORT", default=5432)) 
 db_host = os.environ.get("DB_HOST","db")
 db_password = os.environ.get("DB_PASSWORD")
 
-# URI format: postgres://username:password@hostname:port/database_name?sslmode=require
 
 uri = F'postgres://{db_user}:{db_password}@{db_host}:{db_port}/defaultdb?sslmode=require'
 
