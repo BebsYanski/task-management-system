@@ -8,6 +8,14 @@ services:
       - DATABASE_URL=postgresql://postgres:21000@db:5432/task_db
     depends_on:
       - db
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      retries: 3
+      start_period: 10s
+      timeout: 10s
+    networks:
+      - task-network
 
   frontend:
     build:
@@ -16,6 +24,10 @@ services:
       - "3000:3000"
     depends_on:
       - backend
+    # volumes:
+    #   - ./task-manager-frontend:/app
+    networks:
+      - task-network
 
   db:
     image: postgres:17
@@ -27,6 +39,18 @@ services:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 30s
+      retries: 5
+      start_period: 10s
+      timeout: 5s
+    networks:
+      - task-network
 
 volumes:
   db_data:
+
+networks:
+  task-network:
+    driver: bridge
