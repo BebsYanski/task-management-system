@@ -2,24 +2,31 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from app.models.task import Base
 
-db_user: str = 'avnadmin'
-db_port: int = 18629
-db_host: str = 'postgrestaskdb-task-management-systemv1.b.aivencloud.com'
-db_password: str = 'AVNS_Ho7YPyhliX3KancEu9t'
-# db_user: str = 'postgres'
-# db_port: int = 5432
-# db_host: str = 'db'
-# db_password: str = '21000'
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+
+db_user = os.environ.get("DB_USER")
+db_port = int(os.environ.get("DB_PORT", default=5432))  # Use default 5432 if DB_PORT is not set
+db_host = os.environ.get("DB_HOST","db")
+db_password = os.environ.get("DB_PASSWORD")
+
+
+print(f"DB_USER: {db_user}")
+print(f"DB_PASSWORD: {db_password}")
+print(f"DB_HOST: {db_host}")
+print(f"DB_PORT: {db_port}")
+
+print(f"DB_HOST: {db_host}")
+
 
 # URI format: postgres://username:password@hostname:port/database_name?sslmode=require
 
+# uri = F'postgres://{db_user}:{db_password}@{db_host}:{db_port}/defaultdb?sslmode=require'
 
-# uri: str = F'postgres://avnadmin:AVNS_Ho7YPyhliX3KancEu9t@postgrestaskdb-task-management-systemv1.b.aivencloud.com:18629/defaultdb?sslmode=require'
-
-uri: str = F'postgres://{db_user}:{db_password}@{db_host}:{db_port}/defaultdb?sslmode=require'
-
-
-# uri: str = F'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/task_db'
+uri: str = F'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/task_db'
 
 # Create the database engine
 engine = create_engine(uri)
