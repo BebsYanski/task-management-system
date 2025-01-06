@@ -12,11 +12,13 @@ db_user = os.environ.get("DB_USER")
 db_port = int(os.environ.get("DB_PORT", default=5432)) 
 db_host = os.environ.get("DB_HOST","db")
 db_password = os.environ.get("DB_PASSWORD")
+db_name = os.environ.get("DB_NAME")
+
+# Aiven database
+# uri = F'postgres://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}?sslmode=require'
 
 
-uri = F'postgres://{db_user}:{db_password}@{db_host}:{db_port}/defaultdb?sslmode=require'
-
-# uri: str = F'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/task_db'
+uri: str = F'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}'
 
 # Create the database engine
 engine = create_engine(uri)
