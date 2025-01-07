@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8000/tasks"; // Change this to match your backend endpoint
+// const API_URL = "http://localhost:8000/tasks"; // Change this to match your backend endpoint
+const API_URL = "https://task-management-system-jd8v.onrender.com/tasks/"; // Change this to match your backend endpoint
 
 export const fetchTasks = async () => {
   try {
