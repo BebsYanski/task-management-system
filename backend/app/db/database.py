@@ -1,43 +1,35 @@
+import os
+import sqlalchemy.exc
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from app.models.task import Base
 
-from dotenv import load_dotenv
-import os
-
 load_dotenv()
 
+db_url = os.environ.get("DATABASE_URL")
+# os.environ['DATABASE_URL'] = DATABASE_URL
 
-db_user = os.environ.get("DB_USER")
-db_port = int(os.environ.get("DB_PORT", default=5432)) 
-db_host = os.environ.get("DB_HOST","db")
-db_password = os.environ.get("DB_PASSWORD")
-db_name = os.environ.get("DB_NAME")
+if not db_url:
+    raise ValueError("DB_URL environment variable not set")
 
-# Aiven database
-# uri = F'postgres://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}?sslmode=require'
-
-
-uri: str = F'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}'
-
-# Create the database engine
-engine = create_engine(uri)
-
-Base.metadata.create_all(bind = engine)
-
-# Create a session factory
-Session = sessionmaker(
-  bind=engine,
-  autoflush=True
-  )
-
-# Create a session
-db_session = Session()
-
+uri: str = db_url
 
 try:
-    connection = engine.connect()
-    connection.close()
-    print("ping, Connected") 
+    engine = create_engine(uri)
+    Base.metadata.create_all(bind=engine)  # Create tables if they don't exist
+
+    Session = sessionmaker(bind=engine, autoflush=True)
+    db_session = Session()
+
+    engine.connect().close() # Test the connection
+    print("Database connected successfully.")
+
+except sqlalchemy.exc.OperationalError as e:
+    print(f"Database connection error: {e}")
+    exit(1) # Exit with error status
 except Exception as e:
-    print(f'Error: {str(e)}')
+    print(f"An unexpected error occurred: {e}")
+    raise # Re-raise the exception
+
+# ... rest of your code using db_session
