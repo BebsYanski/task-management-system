@@ -46,6 +46,7 @@ const TaskForm = ({ taskToEdit, onSave, onClose }) => {
           type="text"
           className="form-control"
           id="title"
+          placeholder="Name or title of the task"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
@@ -58,6 +59,7 @@ const TaskForm = ({ taskToEdit, onSave, onClose }) => {
         <textarea
           className="form-control"
           id="description"
+          placeholder="A detailed description of the task"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
