@@ -16,7 +16,7 @@ class Priority(str,Enum):
     
 class TaskStatus(str,Enum):
     complete = "complete"
-    inProgress = "inProgress"
+    # inProgress = "inProgress"
     incomplete = "incomplete"
  
 # Creating a new model or table

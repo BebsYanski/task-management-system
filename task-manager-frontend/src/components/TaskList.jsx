@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchTasks, deleteTask, updateTask, createTask } from "../api/api"; // Import createTask
+import { fetchTasks, deleteTask, updateTask, createTask } from "../api/api";
 import TaskForm from "./TaskForm";
 import Pagination from "./Pagination";
 import Modal from "react-bootstrap/Modal";
@@ -13,12 +13,12 @@ const TaskList = () => {
   const [sortOption, setSortOption] = useState("creation_date");
   const [currentPage, setCurrentPage] = useState(1);
   const tasksPerPage = 5;
-  const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(null); // Error state
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const loadTasks = async () => {
-    setLoading(true); // Set loading to true before fetching
-    setError(null); // Clear any previous errors
+    setLoading(true);
+    setError(null);
     try {
       const data = await fetchTasks();
       setTasks(data);
@@ -26,7 +26,7 @@ const TaskList = () => {
       setError(err.message || "Failed to load tasks.");
       console.error("Error fetching tasks:", err);
     } finally {
-      setLoading(false); // Set loading to false after fetching (success or failure)
+      setLoading(false);
     }
   };
 
@@ -39,7 +39,7 @@ const TaskList = () => {
       if (taskToEdit) {
         await updateTask(taskToEdit.id, taskData);
       } else {
-        await createTask(taskData); // Call create task API here
+        await createTask(taskData);
       }
       loadTasks();
       setShowModal(false);
@@ -85,6 +85,19 @@ const TaskList = () => {
     setCurrentPage(1);
   };
 
+  const handleToggleComplete = async (task) => {
+    try {
+      await updateTask(task.id, {
+        ...task,
+        status: task.status === "complete" ? "incomplete" : "complete",
+      });
+      loadTasks();
+    } catch (err) {
+      setError(err.message || "Failed to update task.");
+      console.error("Error updating task:", err);
+    }
+  };
+
   const filteredTasks = tasks
     .filter((task) =>
       task.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -110,6 +123,18 @@ const TaskList = () => {
   if (error) {
     return <div className="text-danger">Error: {error}</div>;
   }
+
+  const getStatusClass = (status) => {
+    switch (status) {
+      case "complete":
+        return "bg-success"; // Green
+      case "inProgress":
+        return "bg-primary"; // Blue
+      case "incomplete":
+      default:
+        return "bg-danger"; // Red
+    }
+  };
 
   return (
     <div className="container mt-4">
@@ -158,29 +183,61 @@ const TaskList = () => {
 
       <div className="list-group">
         {currentTasks.map((task) => (
-          <div key={task.id} className="list-group-item mb-2 p-3">
-            <h5 className="mb-2">{task.title}</h5>
-            <p className="mb-1">{task.description}</p>
-            <p className="mb-1">
+          <div key={task.id} className="list-group-item mb-3 p-3">
+            <div className="d-flex align-items-center mb-2">
+              <div
+                className={`rounded-circle me-2 ${getStatusClass(task.status)}`}
+                style={{ width: "20px", height: "20px" }}
+              ></div>
+              <h5
+                className="mb-0"
+                style={{
+                  textDecoration:
+                    task.status === "complete" ? "line-through" : "none",
+                }}
+              >
+                {task.title}
+              </h5>
+            </div>
+            <p
+              className="mb-2"
+              style={{
+                textDecoration:
+                  task.status === "complete" ? "line-through" : "none",
+              }}
+            >
+              {task.description}
+            </p>
+            <p className="mb-2">
               <strong>Priority:</strong> {task.priority} | <strong>Due:</strong>{" "}
               {task.due_date}
             </p>
-            <p className="mb-2">
-              <strong>Status:</strong> {task.status}
-            </p>
-            <div className="d-flex">
-              <button
-                className="btn btn-primary me-2"
-                onClick={() => handleEdit(task)}
-              >
-                Edit
-              </button>
-              <button
-                className="btn btn-danger"
-                onClick={() => handleDelete(task.id)}
-              >
-                Delete
-              </button>
+            <div className="d-flex justify-content-between align-items-center">
+              <div>
+                <input
+                  type="checkbox"
+                  className="me-2"
+                  checked={task.status === "complete"}
+                  onChange={() => handleToggleComplete(task)}
+                />
+                <span>
+                  <strong>Status:</strong> {task.status}
+                </span>
+              </div>
+              <div className="d-flex justify-content-end mt-2">
+                <button
+                  className="btn btn-primary btn-sm me-2 btn-custom"
+                  onClick={() => handleEdit(task)}
+                >
+                  Edit
+                </button>
+                <button
+                  className="btn btn-danger btn-sm btn-custom"
+                  onClick={() => handleDelete(task.id)}
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           </div>
         ))}

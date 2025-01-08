@@ -27,3 +27,8 @@ body {
   margin-top: 1.5rem; /* Equivalent to Bootstrap's mt-4 */
 }
 /* ... other styles */
+
+.nav-link.active {
+  font-weight: bold; /* Example: Make the active link bold */
+  color: yellow !important; /* Example: Change the active link color. !important may be necessary to override Bootstrap styles*/
+}

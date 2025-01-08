@@ -102,7 +102,6 @@ const TaskForm = ({ taskToEdit, onSave, onClose }) => {
           onChange={(e) => setStatus(e.target.value)}
         >
           <option value="incomplete">Incompleted</option>
-          <option value="inProgress">In Progress</option>
           <option value="complete">Completed</option>
         </select>
       </div>

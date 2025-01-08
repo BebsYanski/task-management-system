@@ -10,7 +10,7 @@ class Priority(str, Enum):
 
 class TaskStatus(str, Enum):
     complete = "complete"
-    inProgress = "inProgress"
+    # inProgress = "inProgress"
     incomplete = "incomplete"
   
 class TaskBase(BaseModel):
@@ -18,7 +18,7 @@ class TaskBase(BaseModel):
     description: Optional[str] = Field(None, max_length=500, description="Description of the task")
     due_date: Optional[datetime] = Field(None, description="Due date of the task")
     priority: Priority = Field(Priority.medium, description="Priority of the task (low, medium, high)")
-    status: TaskStatus = Field(TaskStatus.incomplete, description="Status of the task (complete,inProgress, incomplete)")
+    status: TaskStatus = Field(TaskStatus.incomplete, description="Status of the task (complete, incomplete)")
 
     @validator("priority", pre=True)
     def validate_priority(cls, value):
@@ -33,7 +33,7 @@ class TaskBase(BaseModel):
     def validate_status(cls, value):
         if isinstance(value, str):
             try:
-                return TaskStatus(value)
+                return TaskStatus(value.lower())
             except ValueError:
                 raise ValueError(f"Invalid status: {value}. Must be one of: {', '.join(TaskStatus.__members__)}")
         return value
@@ -46,7 +46,7 @@ class TaskUpdate(BaseModel):
     description: Optional[str] = Field(None, max_length=500, description="Description of the task")
     due_date: Optional[datetime] = Field(None, description="Due date of the task")
     priority: Optional[Priority] = Field(None, description="Priority of the task (low, medium, high)")
-    status: Optional[TaskStatus] = Field(None, description="Status of the task (complete,inProgress, incomplete)")
+    status: Optional[TaskStatus] = Field(None, description="Status of the task (complete, incomplete)")
 
     @validator("priority", pre=True)
     def validate_priority(cls, value):
@@ -61,7 +61,7 @@ class TaskUpdate(BaseModel):
     def validate_status(cls, value):
         if isinstance(value, str):
             try:
-                return TaskStatus(value)
+                return TaskStatus(value.lower())
             except ValueError:
                 raise ValueError(f"Invalid status: {value}. Must be one of: {', '.join(TaskStatus.__members__)}")
         return value
