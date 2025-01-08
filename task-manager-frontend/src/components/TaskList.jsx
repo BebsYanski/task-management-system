@@ -104,7 +104,8 @@ const TaskList = () => {
     )
     .sort((a, b) => {
       if (sortOption === "priority") {
-        return a.priority.localeCompare(b.priority);
+        const priorityOrder = { high: 1, medium: 2, low: 3 };
+        return priorityOrder[a.priority] - priorityOrder[b.priority];
       } else if (sortOption === "due_date") {
         return new Date(a.due_date) - new Date(b.due_date);
       } else {
